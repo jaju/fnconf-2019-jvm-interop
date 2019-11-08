@@ -16,6 +16,12 @@
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
   </properties>
+  <repositories>
+    <repository>
+      <id>clojars.org</id>
+      <url>https://repo.clojars.org</url>
+    </repository>
+  </repositories>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -32,6 +38,27 @@
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
       <version>1.10.1</version>
+    </dependency>
+    <dependency>
+      <groupId>cheshire</groupId>
+      <artifactId>cheshire</artifactId>
+      <version>5.9.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.clojure</groupId>-->
+<!--      <artifactId>core.async</artifactId>-->
+<!--      <version>0.4.500</version>-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>nrepl</groupId>
+      <artifactId>nrepl</artifactId>
+      <version>0.3.1</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -84,6 +111,11 @@
       <artifactId>quarkus-hibernate-orm-panache</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.13.1</version>
+    </dependency>
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-scala</artifactId>
     </dependency>
@@ -96,6 +128,11 @@
     <sourceDirectory>src/main/kotlin</sourceDirectory>
     <testSourceDirectory>src/test/kotlin</testSourceDirectory>
     <plugins>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>4.3.0</version>
+      </plugin>
       <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
