@@ -6,7 +6,7 @@ import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
-open class RunnerTest {
+open class HelloKotlinTest {
 
     @Test
     fun testHelloEndpoint() {

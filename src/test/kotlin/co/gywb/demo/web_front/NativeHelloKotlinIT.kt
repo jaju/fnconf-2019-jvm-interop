@@ -3,4 +3,4 @@ package co.gywb.demo.web_front
 import io.quarkus.test.junit.NativeImageTest
 
 @NativeImageTest
-open class NativeRunnerIT : RunnerTest()
+open class NativeHelloKotlinIT : HelloKotlinTest()
