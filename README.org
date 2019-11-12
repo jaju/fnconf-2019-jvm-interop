@@ -1,0 +1,13 @@
+* The Web Front
+
+* Setup
+** Quarkus
+Created using something on the lines of the following
+#+BEGIN_SRC bash
+  $ mvn io.quarkus:quarkus-maven-plugin:1.0.0.CR1:create \
+    -DprojectGroupId=co.gywb.demo \
+    -DprojectArtifactId=web-front \
+    -DprojectVersion=0.0.1-SNAPSHOT \
+    -DclassName="co.gywb.demo.web_front.Runner" \
+    -Dextensions="quarkus-vertx,quarkus-vertx-web,quarkus-kotlin,quarkus-scala,resteasy-jsonb,quarkus-jdbc-postgresql,quarkus-agroal,quarkus-flyway,quarkus-hibernate-orm-panache,reactive-pg-client,quarkus-smallrye-openapi"
+#+END_SRC

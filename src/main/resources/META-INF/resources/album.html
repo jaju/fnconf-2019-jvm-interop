@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Album REST service</title>
+  <link rel="stylesheet" href="bootstrap.min.css">
+
+  <!-- Load AngularJS -->
+  <script src="angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module("AlbumManagement", []);
+
+    //Controller Part
+    app.controller("AlbumManagementController", function ($scope, $http) {
+
+      $scope.checkValue = function(ev){
+        console.log(ev);
+      };
+
+      //Initialize page with default data which is blank in this example
+      $scope.albums = [];
+      $scope.apiVersion = sessionStorage.getItem('apiVersion') || 'v1';
+
+      $scope.form = {
+        number:   "10 + 20 + 30",
+        year:     "2001",
+        album:    "foo",
+        artist:   "bar",
+        genre:    "baz",
+        subgenre: "fubarbaz"
+      };
+
+      //Now load the data from server
+      _refreshPageData($scope.apiVersion);
+
+      //HTTP POST methods for add albums
+      $scope.add = function () {
+        var data = {
+          "number":   $scope.form.number,
+          "year":     $scope.form.year,
+          "album":    $scope.form.album,
+          "artist":   $scope.form.artist,
+          "genre":    $scope.form.genre,
+          "subgenre": $scope.form.subgenre
+        };
+        var apiVersion = $scope.apiVersion;
+
+        $http({
+          method:  "POST",
+          url:     '/albums/' + apiVersion,
+          data:    angular.toJson(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(_success, _error);
+      };
+
+      /* Private Methods */
+
+      //HTTP GET- get all albums collection
+      function _refreshPageData(apiVersion) {
+        $http({
+          method: 'GET',
+          url:    '/albums/' + apiVersion
+        }).then(function successCallback(response) {
+          $scope.albums = response.data;
+        }, function errorCallback(response) {
+          console.log(response.statusText);
+        });
+      }
+
+      function _success(response) {
+        _refreshPageData($scope.apiVersion);
+        _clearForm();
+      }
+
+      function _error(response) {
+        alert(response.data.message || response.statusText);
+      }
+
+      //Clear the form
+      function _clearForm() {
+        $scope.form.number = "";
+        $scope.form.year = "";
+        $scope.form.album = "";
+        $scope.form.artist = "";
+        $scope.form.genre = "";
+        $scope.form.subgenre = "";
+      }
+    });
+  </script>
+</head>
+<body ng-app="AlbumManagement" ng-controller="AlbumManagementController">
+
+<div class="container">
+  <h1>REST Service - Album</h1>
+  <label>Check to use the v2 API - <input type="checkbox" ng-model="apiVersion" ng-true-value="'v2'" ng-false-value="'v1'"></label><br/>
+
+  <h3>Add an album</h3>
+  <form ng-submit="add()">
+    <div class="row form-group">
+      <div class="col-6"><input type="text" placeholder="Number" ng-model="form.number" size="60"/></div>
+    </div>
+    <div class="row form-group">
+      <div class="col-6"><input type="text" placeholder="Year" ng-model="form.year" size="60"/></div>
+    </div>
+    <div class="row form-group">
+      <div class="col-6"><input type="text" placeholder="Album" ng-model="form.album" size="60"/></div>
+    </div>
+    <div class="row form-group">
+      <div class="col-6"><input type="text" placeholder="Artist" ng-model="form.artist" size="60"/></div>
+    </div>
+    <div class="row form-group">
+      <div class="col-6"><input type="text" placeholder="Genre" ng-model="form.genre" size="60"/></div>
+    </div>
+    <div class="row form-group">
+      <div class="col-6"><input type="text" placeholder="Subgenre" ng-model="form.subgenre" size="60"/></div>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Save"/>
+  </form>
+
+  <h3>Album List</h3>
+  <table class="table table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+      <th class='outline'>Number</th>
+      <th class='outline'>Year</th>
+      <th class='outline'>Album</th>
+      <th class='outline'>Artist</th>
+      <th class='outline'>Genre</th>
+      <th class='outline'>Subgenre</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="album in albums">
+      <td>{{ album.number }}</td>
+      <td>{{ album.year }}</td>
+      <td>{{ album.album }}</td>
+      <td>{{ album.artist }}</td>
+      <td>{{ album.genre }}</td>
+      <td>{{ album.subgenre }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

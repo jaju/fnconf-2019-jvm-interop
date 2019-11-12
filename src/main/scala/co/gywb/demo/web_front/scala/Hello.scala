@@ -1,12 +1,10 @@
-package co.gywb.demo.web_front
+package co.gywb.demo.web_front.scala
 
-;
-
-import javax.ws.rs.{GET, Path, PathParam, Produces}
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.{GET, Path, PathParam, Produces};
 
 @Path("/hello/scala")
-class HelloScala {
+class Hello {
   @GET
   @Produces(Array(MediaType.TEXT_PLAIN))
   @Path("{name}")
