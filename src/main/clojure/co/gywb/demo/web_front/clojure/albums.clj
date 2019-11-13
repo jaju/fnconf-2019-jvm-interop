@@ -1,6 +1,8 @@
 (ns co.gywb.demo.web-front.clojure.albums
   (:require [cheshire.core :as json])
-  (:import [co.gywb.demo.web_front.scala InfixCalculator]))
+  (:import [co.gywb.demo.web_front.scala InfixCalculator]
+           [co.gywb.demo.web_front.java Album]
+           [co.gywb.demo.web_front.kotlin HelloAlbums]))
 
 (defonce albums (atom #{}))
 
@@ -22,4 +24,16 @@
 
 (comment
   (require '[co.gywb.demo.web-front.clojure.csv-processor :refer [read-album-data]])
+  (import [co.gywb.demo.web_front.kotlin HelloAlbums])
+  (defonce albums-set (read-album-data))
+
+  (doseq [album albums-set]
+    (let [a (doto (Album.)
+              (.setNumber (:number album))
+              (.setYear (:year album))
+              (.setAlbum (:album album))
+              (.setArtist (:artist album))
+              (.setGenre (:genre album))
+              (.setSubgenre (:subgenre album)))]
+      (HelloAlbums/add a)))
   (reset! albums (into #{} (read-album-data))))

@@ -10,13 +10,25 @@ import kotlinx.html.*
 import kotlinx.html.dom.*
 import kotlinx.html.stream.createHTML
 
-@Path("/hello/kotlin/{name}")
+@Path("/hello")
 class Hello {
 
     @GET
+    @Path("/kotlin/{name}")
     @Produces(MediaType.TEXT_PLAIN)
     fun greet(@PathParam("name") name: String) = "Hello, $name, from Kotlin!"
 
+
+
+
+    @GET
+    @Path("/albums.html")
+    @Produces(MediaType.TEXT_HTML)
+    fun albumsToHtml(): String {
+        return HelloAlbums.albums.joinToString(" ") {
+            albumToHtml(it)
+        }
+    }
 
     fun albumToHtml(album : Album) : String {
         return createHTML().div {
@@ -24,4 +36,13 @@ class Hello {
             p { +album.album }
         }
     }
+
+
+}
+
+object HelloAlbums {
+    val albums = mutableSetOf<Album>()
+
+    @JvmStatic fun add(album: Album) = albums.add(album)
+    @JvmStatic fun getAll() = albums
 }
