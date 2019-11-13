@@ -4,12 +4,13 @@
     [javax.ws.rs GET Path PathParam Produces]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defn- greet [name]
-  (str "Hello, " name ", from Clojure!"))
+(defn- greet-impl [name language]
+  (str "Hello, " name ", from " language "!"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (gen-class
-  :name ^{Path "/hello/clojure/{name}"} co.gywb.demo.web_front.clojure.Hello
+  :name ^{Path "/hello/clojure/{name}"} co.gywb.demo.web_front.clojure.Hello2
   :state state
   :init init
   :prefix "-"
@@ -22,17 +23,18 @@
   [[] (atom {})])
 
 (defn -greet [_ ^String name]
-  (greet name))
-
+  (greet-impl name "Clojure"))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; This does not go well with re-eval in the REPL
+;; This one troubles by not loading greet-impl and causing runtime exception
+;; Calling the gen-class implementation loads greet-impl, and this version then
+;; magically runs
 (definterface Greeter (greet [^String name]))
 (deftype ^{Path "/hello/clojure2/{name}"}
-  HelloClojure2 []
+  Hello []
   Greeter
-  (^{GET true
-     Produces ["text/plain"]}
-    greet [_ ^{PathParam "name"} name] (greet name)))
+  (^{GET true Produces ["text/plain"]}
+    greet [_ ^{PathParam "name"} name]
+    (greet-impl name "Clojure2")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

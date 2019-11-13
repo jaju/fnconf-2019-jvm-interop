@@ -9,7 +9,6 @@
 (defmacro pred [f]
   `(samify java.util.function.Predicate ~f test))
 
-
 (comment
   (def data (range 20))
 

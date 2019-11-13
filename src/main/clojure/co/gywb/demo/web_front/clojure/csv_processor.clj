@@ -5,7 +5,8 @@
 
 (defn docs:vecs->maps
   ([doc-vecs-with-header]
-   (apply docs:vecs->maps ((juxt first rest) doc-vecs-with-header)))
+   (apply docs:vecs->maps
+          ((juxt first rest) doc-vecs-with-header)))
   ([header-vec doc-vecs]
    (map zipmap (->> header-vec
                     (map (comp keyword s/lower-case))

@@ -31,10 +31,14 @@ public class AlbumResource {
 
     static {
         IFn require = Clojure.var("clojure.core", "require");
+        // Java form of (require 'co.gywb.demo.web-front.clojure.albums)
         require.invoke(Clojure.read("co.gywb.demo.web-front.clojure.albums"));
     }
-    private static final IFn cljAddAlbum = Clojure.var("co.gywb.demo.web-front.clojure.albums", "add-album");
-    private static final IFn cljGetAlbums = Clojure.var("co.gywb.demo.web-front.clojure.albums", "get-albums");
+
+    private static final IFn cljAddAlbum =
+        Clojure.var("co.gywb.demo.web-front.clojure.albums", "add-album");
+    private static final IFn cljGetAlbums =
+        Clojure.var("co.gywb.demo.web-front.clojure.albums", "get-albums");
 
     @GET
     @Path("/v2")
