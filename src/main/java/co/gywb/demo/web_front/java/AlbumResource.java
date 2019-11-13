@@ -8,6 +8,7 @@ import java.util.Set;
 
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
+import co.gywb.demo.web_front.kotlin.HelloAlbums;
 
 @Path("/albums")
 @Produces(MediaType.APPLICATION_JSON)
@@ -51,5 +52,19 @@ public class AlbumResource {
     public String addV2(String album) {
         cljAddAlbum.invoke(album);
         return "[]";
+    }
+
+    @POST
+    @Path("/v3")
+    public Set<Album> addToKotlinAlbums(Album album) {
+        HelloAlbums.add(album);
+        return HelloAlbums.getAll();
+    }
+
+    @GET
+    @Path("/v3")
+    @Produces(MediaType.TEXT_HTML)
+    public String renderAlbums(Album album) {
+        return HelloAlbums.toHtml();
     }
 }
