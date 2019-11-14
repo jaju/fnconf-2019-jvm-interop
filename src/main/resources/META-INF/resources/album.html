@@ -13,7 +13,7 @@
     //Controller Part
     app.controller("AlbumManagementController", function ($scope, $http) {
 
-      $scope.checkValue = function(ev){
+      $scope.checkValue = function (ev) {
         console.log(ev);
       };
 
@@ -94,27 +94,34 @@
 
 <div class="container">
   <h1>REST Service - Album</h1>
-  <label>Check to use the v2 API - <input type="checkbox" ng-model="apiVersion" ng-true-value="'v2'" ng-false-value="'v1'"></label><br/>
+  <label>Check to use the v2 API - <input type="checkbox" ng-model="apiVersion" ng-true-value="'v2'"
+                                          ng-false-value="'v1'"></label><br/>
 
   <h3>Add an album</h3>
   <form ng-submit="add()">
     <div class="row form-group">
-      <div class="col-6"><input type="text" placeholder="Number" ng-model="form.number" size="60"/></div>
+        <label class="col-2">Number</label>
+        <div class="col-4"><input type="text" placeholder="Number" ng-model="form.number" size="60"/></div>
     </div>
     <div class="row form-group">
-      <div class="col-6"><input type="text" placeholder="Year" ng-model="form.year" size="60"/></div>
+      <label class="col-2">Year</label>
+      <div class="col-4"><input type="text" placeholder="Year" ng-model="form.year" size="60"/></div>
     </div>
     <div class="row form-group">
-      <div class="col-6"><input type="text" placeholder="Album" ng-model="form.album" size="60"/></div>
+      <label class="col-2">Album Name</label>
+      <div class="col-4"><input type="text" placeholder="Album" ng-model="form.album" size="60"/></div>
     </div>
     <div class="row form-group">
-      <div class="col-6"><input type="text" placeholder="Artist" ng-model="form.artist" size="60"/></div>
+      <label class="col-2">Artist</label>
+      <div class="col-4"><input type="text" placeholder="Artist" ng-model="form.artist" size="60"/></div>
     </div>
     <div class="row form-group">
-      <div class="col-6"><input type="text" placeholder="Genre" ng-model="form.genre" size="60"/></div>
+      <label class="col-2">Genre</label>
+      <div class="col-4"><input type="text" placeholder="Genre" ng-model="form.genre" size="60"/></div>
     </div>
     <div class="row form-group">
-      <div class="col-6"><input type="text" placeholder="Subgenre" ng-model="form.subgenre" size="60"/></div>
+      <label class="col-2">Subgenre</label>
+      <div class="col-4"><input type="text" placeholder="Subgenre" ng-model="form.subgenre" size="60"/></div>
     </div>
     <input type="submit" class="btn btn-primary" value="Save"/>
   </form>
@@ -125,7 +132,7 @@
     <tr>
       <th class='outline'>Number</th>
       <th class='outline'>Year</th>
-      <th class='outline'>Album</th>
+      <th class='outline'>Album Name</th>
       <th class='outline'>Artist</th>
       <th class='outline'>Genre</th>
       <th class='outline'>Subgenre</th>

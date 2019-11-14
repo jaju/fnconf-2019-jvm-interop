@@ -6,11 +6,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/hello")
+@Path("/hello/java")
 public class Hello {
+
     @GET
+    @Path("/{name}")
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/java/{name}")
     public String greet(@PathParam("name") String name) {
         return "Hello, " + name + ", from Java!";
     }
