@@ -37,18 +37,16 @@ object AlbumsHTMLRenderer {
                 table(classes = "table table-bordered table-striped table-hover") {
                     thead {
                         tr {
-                            th(classes = "outline") { +"Number" }
-                            th(classes = "outline") { +"Year" }
-                            th(classes = "outline") { +"Album" }
-                            th(classes = "outline") { +"Artist" }
-                            th(classes = "outline") { +"Genre" }
-                            th(classes = "outline") { +"Subgenre" }
+                            arrayOf("Number", "Year",
+                                    "Album", "Artist",
+                                    "Genre", "Subgenre")
+                                    .map { th(classes = "outline") { +it } }
                         }
                     }
                     tbody {
                         albums.map {
                             tr {
-                                td { +it.number }
+                                td { b { +it.number } }
                                 td { +it.year }
                                 td { +it.album }
                                 td { +it.artist }

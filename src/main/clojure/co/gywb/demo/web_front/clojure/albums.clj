@@ -1,8 +1,7 @@
 (ns co.gywb.demo.web-front.clojure.albums
   (:require [cheshire.core :as json])
   (:import [co.gywb.demo.web_front.scala InfixCalculator]
-           [co.gywb.demo.web_front.java Album]
-           [co.gywb.demo.web_front.kotlin AlbumsHTMLRenderer]))
+           [co.gywb.demo.web_front.java Album]))
 
 (defonce albums (atom #{}))
 
