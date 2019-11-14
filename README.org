@@ -1,5 +1,5 @@
 * The Web Front
-
+The README is sorely lacking, but should see an update to describe a steps to play around.
 * Setup
 ** Quarkus
 Created using something on the lines of the following
