@@ -1,8 +1,22 @@
 * The Web Front
-The README is sorely lacking, but should see an update to describe a steps to play around.
+A highly imginative(ly lacking) application to showcase how to set up a JVM-based application that allows multiple languages to work together
+- Independently, in the same process-space
+- Interacting with each other
+
+The following pieces of technologies are used
+- [[https://quarkus.io/][Quarkus]] and its extensions
+- Languages
+  - [[https://clojure.org/][Clojure]]
+  - [[https://www.oracle.com/technetwork/java/index.html][Java]]
+  - [[https://kotlinlang.org/][Kotlin]]
+  - [[https://www.scala-lang.org/][Scala]]
+- Tooling
+  - [[http://maven.apache.org/][Maven]] - as set up by Quarkus
+
+
 * Setup
 ** Quarkus
-Created using something on the lines of the following
+This project was created using something on the lines of the following
 #+BEGIN_SRC bash
   $ mvn io.quarkus:quarkus-maven-plugin:1.0.0.CR1:create \
     -DprojectGroupId=co.gywb.demo \
@@ -11,3 +25,63 @@ Created using something on the lines of the following
     -DclassName="co.gywb.demo.web_front.Runner" \
     -Dextensions="quarkus-vertx,quarkus-vertx-web,quarkus-kotlin,quarkus-scala,resteasy-jsonb,quarkus-jdbc-postgresql,quarkus-agroal,quarkus-flyway,quarkus-hibernate-orm-panache,reactive-pg-client,quarkus-smallrye-openapi"
 #+END_SRC
+Please consult Quarkus' documentation for more details. They have provided useful ways to tweak the maven configuration from the command-line to use more extensions. /Also note that we haven't used some extensions at all./
+
+Further more, a few other dependencies and plugins were added for various languages and their libraries that were used. Please go through the /pom.xml/ file. It's verbose (hey, it's XML!), but pretty straightforward when you can learn to ignore the XML noise.
+
+Note that the plugin-order matters. I'm no Maven expert and it probably shows, but it worked! There are probably some dependencies added that are not being used - only betrays the intention to do more without managing to do it. But maybe one of these days, I'll be able to add more examples.
+
+* Run It
+_Note_: As of right now, the maven configuration is not completely right to get auto-compile for all languages. There are some quirks, which can be handled by invoking compilation in another window. Quarkus is generally pretty reliable in hot-reloading classes when the compiled class-files in the /target/ folder update.
+
+** Dev-mode run
+Use the contained *mvnw* script to start the application in dev-mode (to get all the dev-time hot-reloading goodies)
+#+BEGIN_SRC bash
+./mvnw clean compile quarkus:dev
+#+END_SRC
+This will compile all code across the various language folders - _src/main/{clojure,java,kotlin,scala}_ - and bring up the application.
+When you run this the first time, maven will likely download all dependencies that may be missing.
+
+** Test the Hello World endpoints
+Each language has a hello-world GET endpoint implementation. For a quick check, run the following in your shell (assumes /curl/ is available)
+#+BEGIN_SRC bash
+  for lang in clojure scala kotlin java
+  do
+      curl http://localhost:8080/hello/$lang/$lang
+      echo
+  done
+#+END_SRC
+
+The output will probably look like the following if all went well
+#+BEGIN_EXAMPLE
+Hello, clojure, from Clojure!
+Hello, scala, from Scala!
+Hello, kotlin, from Kotlin!
+Hello, java, from Java!
+#+END_EXAMPLE
+
+** Starting the Clojure nrepl server
+Simply hit the end-point for starting it as follows
+#+BEGIN_SRC bash
+curl http://localhost:8080/clojure/start-nrepl
+#+END_SRC
+You should see a text-response confirming that it has started. It's safe to it it multiple times.
+Nrepl runs on port *4001* - hardcoded to keep things simple.
+
+To stop,
+#+BEGIN_SRC bash
+curl http://localhost:8080/clojure/stop-nrepl
+#+END_SRC
+
+Code that handles the NREPL is in [[file:src/main/clojure/co/gywb/demo/web_front/clojure/system.clj][system.clj]]. It has a few other pieces of code that may be of interest in understanding how you can access other interesting objects set up in the framework, like your /DataSource/ instance for example.
+
+** Other end-points/URLs
+- [[http://localhost:8080/album.html]] - Has form for adding new albums, and listing existing ones. Stolen from an example from Quarkus demo material.
+- [[http://localhost:8080/albums/v1]] - Endpoint in plain Java
+- [[http://localhost:8080/albums/v2]] - Endpoint which invokes code from Java, Clojure and Scala
+- [[http://localhost:8080/albums/list.html]] - Endpoint in Kotlin which generates the entire HTML on the server-side using Kotlin's "safe" HTML generation DSL.
+
+* Improvements and clarifications
+Please feel free to file issues for any suggestions you may have. Please feel free to send PRs too!
+
+
